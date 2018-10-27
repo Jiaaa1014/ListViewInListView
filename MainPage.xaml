@@ -7,20 +7,54 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-
-    <Grid>
-        <ListView ItemsSource="{x:Bind ParentList}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ParentClass">
-                    <ListView ItemsSource="{x:Bind Children}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:ChildClass">
-                                <TextBlock Text="{x:Bind Id}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+    <Page.Resources>
+        <Style x:Key="RedBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Red" />
+        </Style>
+        <DataTemplate x:Key="FirstDataTemplate" x:DataType="local:ParentClass">
+            <GridView
+                x:Name="SecondDataGridView"
+                Background="LightBlue"
+                ItemTemplate="{StaticResource SecondDataOneTemplate}"
+                ItemsSource="{x:Bind Children}"
+                Opacity=".5" />
+        </DataTemplate>
+        <DataTemplate x:Key="SecondDataTemplate" x:DataType="local:ParentClass">
+            <StackPanel>
+                <GridView
+                    BorderBrush="LightCoral"
+                    ItemTemplate="{StaticResource SecondDataOneTemplate}"
+                    ItemsSource="{x:Bind Children}"
+                    Opacity=".5" />
+                <TextBlock Text="{x:Bind Id}" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SecondDataOneTemplate" x:DataType="local:ChildClass">
+            <Border
+                x:Name="CustBorder"
+                Width="200"
+                Height="100"
+                Padding="0"
+                BorderThickness="2"
+                Style="{StaticResource RedBorderStyle}">
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{x:Bind Name}" />
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid Margin="80" Padding="100,100,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListView
+            x:Name="listView"
+            ItemTemplate="{StaticResource FirstDataTemplate}"
+            ItemsSource="{x:Bind ParentList}" />
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Click="ColorClick" Content="變色" />
+        </StackPanel>
     </Grid>
 </Page>

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace DoubleDetails
@@ -23,9 +25,13 @@ namespace DoubleDetails
 
         public MainPage()
         {
-            this.InitializeComponent();
-            
+            InitializeComponent();
+            AddData();
 
+        }
+
+        public void AddData()
+        {
             ParentList.Add(new ParentClass()
             {
                 Title = "Second",
@@ -46,9 +52,13 @@ namespace DoubleDetails
                 {
                     new ChildClass(){Name = "C1",Id = 1},
                     new ChildClass(){Name = "C2",Id = 2},
-                    new ChildClass(){Name = "C3",Id = 3},
                 }
             });
+        }
+
+        private void ColorClick(object sender, RoutedEventArgs e)
+        {
+            listView.ItemTemplate = Resources["SecondDataTemplate"] as DataTemplate;
         }
     }
 
